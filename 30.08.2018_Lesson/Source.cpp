@@ -22,25 +22,21 @@ void add_num(int *&a, int &n, int value) {
 }
 //case 3
 void erase(int* &a, int &n, int value) {
-	int k=-1;
-	
+	int k = -1;
 	for (int i = 0; i < n; i++)
-	{
 		if (a[i] == value) k = i;
-	}
-	if (k < 0) return; // not found
-
-	int* tmp;
+	if (k < 0) return;
+	int *tmp;
 	int j = 0;
 	tmp = new int[n - 1];
 	for (int i = 0; i < n; i++)
 		if (a[i] != value)
-			tmp[j++] == a[i];
-
+			tmp[j++] = a[i];
 	delete[] a;
 	a = tmp;
 	n = j;
 }
+
 
 bool asc(int a, int b) {
 	return (a > b);
@@ -113,30 +109,37 @@ int* min_pointer(int *p, int *p1) {
 // 29 и 30 объединить
 // **Написать функцию, которая принимает указатель на массив и количество элементов
 // и возвращает минимальный элемент массива(значение и номер элемента).
-// и максимальный элемент массива(значение и номер элемента).
-void minMax(int* a, int n) {
+// (30)... и возвращает максимальный элемент массива(значение и номер элемента).
+void min(int* a, int n) {
 	int min = INT_MAX;
-	int max = INT_MIN;
 	int *p = a;
-	int *p1 = a;
-	int imin, imax;
+	int imin;
 
-	for (; p < a + n; p++, p1++)
+	for (; p < a + n; p++)
 	{
 		if (*p < min) {
 			imin = p - a;
 			min = *p;
 		}
-		if (*p1 > max) {
-			imax = p1 - a;
-			max = *p1;
-		}
 	}
 		
 	cout << "min a[" << imin << "] = " << min << endl;
+}
+void max(int* a, int n) {
+	int max = INT_MIN;
+	int *p = a;
+	int imax;
+
+	for (; p < a + n; p++)
+	{
+		if (*p > max) {
+			imax = p - a;
+			max = *p;
+		}
+	}
+
 	cout << "max a[" << imax << "] = " << max << endl;
 }
-
 
 int main()
 {
@@ -223,7 +226,7 @@ int main()
 
 			int *a;
 			int n = 0;
-			
+			/*a = new int[n];*/
 			/*for (int *p = a; p<a+n; p++)
 			{
 				*p = rand() % 9999999 + 7000000;
@@ -237,13 +240,16 @@ int main()
 			add_num(a, n, 12);
 			add_num(a, n, 12);
 
-			/*erase(a, n, 4);*/
-			erase(a, n, 5);
-
 			for (int i = 0; i < n; i++)
 				cout << a[i] <<" ";
 			cout << endl;
-			delete[] a;
+
+			erase(a, n, 4);
+			erase(a, n, 12);
+			for (int i = 0; i < n; i++)
+				cout << a[i] << " ";
+			cout << endl;
+			/*delete[] a;*/
 		}
 		break;
 		case 4:
@@ -254,33 +260,30 @@ int main()
 			int* a;
 			int n = 12;
 			a = new int[n];
-			bool(*fs[2])(int, int) = { asc, desc };
 
 			for (int i = 0; i < n; i++)
 			{
 				a[i] = rand() % 12;
-				cout << a[i] << endl;
+				cout << a[i] << " ";
 			}
+			cout << endl;
 
 			/*sort_array(a, n, desc);*/
 			/*sort_array(a, n, asc);*/
 			
-
+			bool(*fs[2])(int, int) = { asc, desc };
 			int choice;
 			while (true)
 			{
 				cin >> choice;
 				if (choice < 0 || choice>2) break;
 
-				sort_array(a, n, fs[choice]);
-			}
+				sort_array(a, n, *fs[choice]);
 
-		/*	for (int i = 0; i < n; i++)
-			{
-				cout << a[i] << " ";
+				for (int i = 0; i < n; i++)
+					cout << a[i] << " ";
+				cout << endl << endl;
 			}
-			cout << endl << endl;*/
-			
 		}
 		break;
 		case 5:
@@ -399,7 +402,15 @@ int main()
 			}
 			cout << endl;
 
-			minMax(a, n);
+			void(*f[2])(int*, int) = { min, max };
+			int choice;
+			while (true)
+			{
+				cin >> choice;
+				if (choice < 0 || choice>2) break;
+
+				f[choice](a, n);
+			}
 
 		}
 		break;
